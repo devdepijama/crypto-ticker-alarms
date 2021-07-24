@@ -19,10 +19,14 @@ configurations {
 repositories {
 	maven { url 'https://repo.spring.io/snapshot' }
 	mavenCentral()
+	maven { url 'https://jitpack.io' }
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	implementation 'com.github.binance-exchange:binance-java-api:08d52a'
+
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -35,4 +39,9 @@ test {
 bootBuildImage {
 	builder = 'paketobuildpacks/builder:tiny'
 	environment = ['BP_NATIVE_IMAGE': 'true']
+}
+
+nativeBuild {
+	buildArgs("--enable-https", "--enable-http", "-H:+AddAllCharsets") // Arguments to be passed to native-image invocation
+	verbose = true
 }
