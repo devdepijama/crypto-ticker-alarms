@@ -40,3 +40,8 @@ bootBuildImage {
 	builder = 'paketobuildpacks/builder:tiny'
 	environment = ['BP_NATIVE_IMAGE': 'true']
 }
+
+nativeBuild {
+	buildArgs("--enable-https", "--enable-http", "-H:+AddAllCharsets") // Arguments to be passed to native-image invocation
+	verbose = true
+}

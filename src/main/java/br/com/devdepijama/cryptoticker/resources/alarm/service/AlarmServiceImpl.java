@@ -1,7 +1,11 @@
 package br.com.devdepijama.cryptoticker.resources.alarm.service;
 
 import br.com.devdepijama.cryptoticker.resources.alarm.Alarm;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;

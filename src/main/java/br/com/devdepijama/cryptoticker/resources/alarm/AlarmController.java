@@ -31,7 +31,7 @@ public class AlarmController {
                 .collect(Collectors.toSet());
     }
 
-    @PostMapping
+    @PostMapping(path = "/")
     public void addAlarm(@RequestBody Alarm alarm) {
         alarmService.add(Utils.marketFromCoins(alarm.getCoinLeft(), alarm.getCoinRight()), alarm);
     }
