@@ -13,7 +13,7 @@
   "allDeclaredConstructors":true
 },
 {
-  "name":"br.com.devdepijama.cryptoticker.AppContext$$EnhancerBySpringCGLIB$$d1d4c01",
+  "name":"br.com.devdepijama.cryptoticker.AppContext$$EnhancerBySpringCGLIB$$632e7d46",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true,
@@ -21,7 +21,7 @@
   "methods":[{"name":"getAlarmService","parameterTypes":[] }]
 },
 {
-  "name":"br.com.devdepijama.cryptoticker.AppContext$$EnhancerBySpringCGLIB$$d1d4c01$$FastClassBySpringCGLIB$$f46680e0",
+  "name":"br.com.devdepijama.cryptoticker.AppContext$$EnhancerBySpringCGLIB$$632e7d46$$FastClassBySpringCGLIB$$50cf5a6",
   "methods":[{"name":"<init>","parameterTypes":["java.lang.Class"] }]
 },
 {
@@ -37,7 +37,7 @@
   "methods":[{"name":"main","parameterTypes":["java.lang.String[]"] }]
 },
 {
-  "name":"br.com.devdepijama.cryptoticker.CryptoTickerApplication$$EnhancerBySpringCGLIB$$5c4374b0",
+  "name":"br.com.devdepijama.cryptoticker.CryptoTickerApplication$$EnhancerBySpringCGLIB$$b254a5f5",
   "allDeclaredFields":true,
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true,
@@ -88,6 +88,12 @@
     {"name":"getAll","parameterTypes":["java.lang.String"] }, 
     {"name":"getById","parameterTypes":["java.lang.String","java.lang.String"] }
   ]
+},
+{
+  "name":"br.com.devdepijama.cryptoticker.resources.alarm.service.webhook.WebhookInvokerImpl$WebhookPayload",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
 },
 {
   "name":"byte[]"
@@ -332,8 +338,7 @@
   "name":"java.lang.RuntimePermission"
 },
 {
-  "name":"java.lang.String",
-  "allDeclaredMethods":true
+  "name":"java.lang.String"
 },
 {
   "name":"java.lang.String[]"
@@ -1692,7 +1697,7 @@
   "allPublicMethods":true
 },
 {
-  "name":"org.springframework.boot.validation.beanvalidation.MethodValidationExcludeFilter$$Lambda$538/0x0000000840368040",
+  "name":"org.springframework.boot.validation.beanvalidation.MethodValidationExcludeFilter$$Lambda$539/0x0000000840368440",
   "allDeclaredFields":true,
   "allDeclaredMethods":true
 },
@@ -2300,10 +2305,6 @@
 },
 {
   "name":"org.springframework.web.bind.annotation.Mapping",
-  "allDeclaredMethods":true
-},
-{
-  "name":"org.springframework.web.bind.annotation.PathVariable",
   "allDeclaredMethods":true
 },
 {

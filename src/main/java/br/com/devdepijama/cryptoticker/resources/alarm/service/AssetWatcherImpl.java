@@ -2,6 +2,8 @@ package br.com.devdepijama.cryptoticker.resources.alarm.service;
 
 import br.com.devdepijama.cryptoticker.resources.alarm.Alarm;
 import br.com.devdepijama.cryptoticker.resources.alarm.Trigger;
+import br.com.devdepijama.cryptoticker.resources.alarm.service.webhook.WebhookInvoker;
+import br.com.devdepijama.cryptoticker.resources.alarm.service.webhook.WebhookInvokerImpl;
 import com.binance.api.client.BinanceApiCallback;
 import com.binance.api.client.BinanceApiClientFactory;
 import com.binance.api.client.domain.event.AggTradeEvent;
@@ -21,15 +23,17 @@ public class AssetWatcherImpl implements AssetWatcher, Closeable {
 
     private final Map<String, Alarm> alarmsById;
     private final String assetName;
+    private final BinanceApiCallback<AggTradeEvent> binanceApiCallback;
+    private final WebhookInvoker webhookInvoker;
     private Closeable callback;
     private BigDecimal lastPrice;
-    private final BinanceApiCallback<AggTradeEvent> binanceApiCallback;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AssetWatcherImpl.class);
 
     public AssetWatcherImpl(String assetName) {
         this.assetName = assetName;
         this.alarmsById = new HashMap<>();
+        this.webhookInvoker = new WebhookInvokerImpl();
         this.binanceApiCallback = new BinanceApiCallback<>() {
             @Override
             public void onResponse(AggTradeEvent response) {
@@ -84,6 +88,13 @@ public class AssetWatcherImpl implements AssetWatcher, Closeable {
                 (triggerCondition.equals(Trigger.ANY) && isHit(lastPrice, targetPrice, price))
             ) {
                 LOGGER.info("Alarm triggered! {} on {}", triggerCondition.name().toLowerCase(), price);
+
+                new Thread(() -> webhookInvoker.notify(
+                    alarm.getWebhook().toString(),
+                    alarm.getId(),
+                    alarm.getCoinLeft(), alarm.getCoinRight(),
+                    price.toString()
+                )).start();
             }
 
             // Update last price for reference
