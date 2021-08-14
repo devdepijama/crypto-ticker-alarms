@@ -16,7 +16,7 @@ public class Alarm {
     private AlarmLine line;
 
     @NonNull
-    private Trigger triggerOn;
+    private AlarmTrigger triggerOn;
 
     @NonNull
     private String coinLeft;

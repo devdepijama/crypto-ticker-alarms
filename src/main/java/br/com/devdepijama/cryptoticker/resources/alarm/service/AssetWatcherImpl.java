@@ -1,7 +1,7 @@
 package br.com.devdepijama.cryptoticker.resources.alarm.service;
 
 import br.com.devdepijama.cryptoticker.resources.alarm.Alarm;
-import br.com.devdepijama.cryptoticker.resources.alarm.Trigger;
+import br.com.devdepijama.cryptoticker.resources.alarm.AlarmTrigger;
 import br.com.devdepijama.cryptoticker.resources.alarm.service.webhook.WebhookInvoker;
 import br.com.devdepijama.cryptoticker.resources.alarm.service.webhook.WebhookInvokerImpl;
 import com.binance.api.client.BinanceApiCallback;
@@ -74,27 +74,22 @@ public class AssetWatcherImpl implements AssetWatcher, Closeable {
         final BigDecimal price = new BigDecimal(tradeEvent.getPrice());
         final long eventTimestamp = tradeEvent.getEventTime();
 
-        LOGGER.debug("{} -> {}", assetName, price);
+        LOGGER.info("{} -> {}", assetName, price);
         alarmsById.values().forEach(alarm -> {
             final BigDecimal targetPrice = computeTargetPrice(alarm, eventTimestamp);
 
-            final Trigger triggerCondition = alarm.getTriggerOn();
+            final AlarmTrigger alarmTriggerCondition = alarm.getTriggerOn();
             lastPrice = Optional.ofNullable(lastPrice)
                                 .orElse(price);
 
             if (
-                (triggerCondition.equals(Trigger.RISING) && isRising(lastPrice, targetPrice, price)) ||
-                (triggerCondition.equals(Trigger.FALLING) && isFalling(lastPrice, targetPrice, price)) ||
-                (triggerCondition.equals(Trigger.ANY) && isHit(lastPrice, targetPrice, price))
+                (alarmTriggerCondition.equals(AlarmTrigger.RISING) && isRising(lastPrice, targetPrice, price)) ||
+                (alarmTriggerCondition.equals(AlarmTrigger.FALLING) && isFalling(lastPrice, targetPrice, price)) ||
+                (alarmTriggerCondition.equals(AlarmTrigger.ANY) && isHit(lastPrice, targetPrice, price))
             ) {
-                LOGGER.info("Alarm triggered! {} on {}", triggerCondition.name().toLowerCase(), price);
+                LOGGER.info("Alarm triggered! {} on {}", alarmTriggerCondition.name().toLowerCase(), price);
 
-                new Thread(() -> webhookInvoker.notify(
-                    alarm.getWebhook().toString(),
-                    alarm.getId(),
-                    alarm.getCoinLeft(), alarm.getCoinRight(),
-                    price.toString()
-                )).start();
+                new Thread(() -> webhookInvoker.notify(alarm, price)).start();
             }
 
             // Update last price for reference

@@ -1,5 +1,5 @@
 package br.com.devdepijama.cryptoticker.resources.alarm;
 
-public enum Trigger {
+public enum AlarmTrigger {
     RISING, FALLING, ANY;
 }
