@@ -1,7 +1,9 @@
 package br.com.devdepijama.cryptoticker.resources.alarm.service.webhook;
 
-import java.net.URL;
+import br.com.devdepijama.cryptoticker.resources.alarm.Alarm;
+
+import java.math.BigDecimal;
 
 public interface WebhookInvoker {
-    void notify(String url, String id, String coinLeft, String coinRight, String price);
+    void notify(Alarm alarm, BigDecimal price);
 }
