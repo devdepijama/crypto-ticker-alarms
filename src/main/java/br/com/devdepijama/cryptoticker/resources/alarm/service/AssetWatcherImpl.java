@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 public class AssetWatcherImpl implements AssetWatcher, Closeable {
 
@@ -27,10 +28,12 @@ public class AssetWatcherImpl implements AssetWatcher, Closeable {
     private final WebhookInvoker webhookInvoker;
     private Closeable callback;
     private BigDecimal lastPrice;
+    private final String watcherId;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AssetWatcherImpl.class);
 
     public AssetWatcherImpl(String assetName) {
+        this.watcherId = UUID.randomUUID().toString();
         this.assetName = assetName;
         this.alarmsById = new HashMap<>();
         this.webhookInvoker = new WebhookInvokerImpl();
@@ -74,7 +77,7 @@ public class AssetWatcherImpl implements AssetWatcher, Closeable {
         final BigDecimal price = new BigDecimal(tradeEvent.getPrice());
         final long eventTimestamp = tradeEvent.getEventTime();
 
-        LOGGER.info("{} -> {}", assetName, price);
+        LOGGER.info("[{}] {} -> {}", this.watcherId, assetName, price);
         alarmsById.values().forEach(alarm -> {
             final BigDecimal targetPrice = computeTargetPrice(alarm, eventTimestamp);
 
