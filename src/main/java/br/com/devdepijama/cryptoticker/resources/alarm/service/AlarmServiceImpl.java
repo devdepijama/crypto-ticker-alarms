@@ -1,23 +1,19 @@
 package br.com.devdepijama.cryptoticker.resources.alarm.service;
 
 import br.com.devdepijama.cryptoticker.resources.alarm.Alarm;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class AlarmServiceImpl implements AlarmService {
 
     private Map<String, AssetWatcher> watcherByMarket;
 
     public AlarmServiceImpl() {
-        this.watcherByMarket = new HashMap<>();
+        this.watcherByMarket = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -36,9 +32,12 @@ public class AlarmServiceImpl implements AlarmService {
 
     @Override
     public void add(String market, Alarm alarm) {
-        AssetWatcher watcher = watcherByMarket.getOrDefault(market, new AssetWatcherImpl(market));
+        final AssetWatcher watcher = Optional.ofNullable(watcherByMarket.get(market))
+                                             .orElseGet(() -> {
+                                                 watcherByMarket.put(market, new AssetWatcherImpl(market));
+                                                 return watcherByMarket.get(market);
+                                             });
         watcher.addAlarm(alarm.getId(), alarm);
-        watcherByMarket.put(market, watcher);
     }
 
     @Override
