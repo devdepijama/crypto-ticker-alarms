@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,6 +30,14 @@ public class AlarmController {
         return alarmService.getAll(market).stream()
                 .map(Alarm::getId)
                 .collect(Collectors.toSet());
+    }
+
+    @GetMapping(path = "/{coinLeft}/{coinRight}/{id}")
+    public Optional<Alarm> getSpecificAlarm(@PathVariable String coinLeft, @PathVariable String coinRight, @PathVariable String id) {
+        final String market = Utils.marketFromCoins(coinLeft, coinRight);
+        return alarmService.getAll(market).stream()
+                           .filter(alarm -> id.equals(alarm.getId()))
+                           .findFirst();
     }
 
     @PostMapping(path = "/")

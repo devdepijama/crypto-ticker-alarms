@@ -13,6 +13,12 @@ public class Alarm {
     private String id;
 
     @NonNull
+    private String strategyId;
+
+    @NonNull
+    private String name;
+
+    @NonNull
     private AlarmLine line;
 
     @NonNull
