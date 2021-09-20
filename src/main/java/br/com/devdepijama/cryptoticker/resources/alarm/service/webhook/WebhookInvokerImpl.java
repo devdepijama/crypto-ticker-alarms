@@ -39,6 +39,12 @@ public class WebhookInvokerImpl implements WebhookInvoker {
         private String id;
 
         @NonNull
+        private String name;
+
+        @NonNull
+        private String strategyId;
+
+        @NonNull
         private String coinLeft;
 
         @NonNull
@@ -53,6 +59,8 @@ public class WebhookInvokerImpl implements WebhookInvoker {
         public static WebhookPayload from(Alarm alarm, BigDecimal price) {
             return new WebhookPayload(
                 alarm.getId(),
+                alarm.getName(),
+                alarm.getStrategyId(),
                 alarm.getCoinLeft(),
                 alarm.getCoinRight(),
                 alarm.getTriggerOn(),
